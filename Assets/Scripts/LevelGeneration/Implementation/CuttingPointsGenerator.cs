@@ -5,17 +5,7 @@ namespace Assets.Scripts.LevelGeneration
 {
     public class CuttingPointsGenerator : ICuttingPointsGenerator
     {
-        private readonly CuttingPointsGenerationSettings pointSettings;
-
-        private readonly MeshGenerationSettings meshSettings;
-
-        public CuttingPointsGenerator(CuttingPointsGenerationSettings pointSettings, MeshGenerationSettings meshSettings)
-        {
-            this.pointSettings = pointSettings;
-            this.meshSettings = meshSettings;
-        }
-
-        public Vector3[] GenerateCuttingPoints()
+        public Vector3[] GenerateCuttingPoints(CuttingPointsGenerationSettings pointSettings, MeshGenerationSettings meshSettings)
         {
             var xCenter = (float)meshSettings.Size / 2 + meshSettings.StartedPoint.x;
             var xDirection = UnityEngine.Random.Range(0, 1) * 2 - 1;

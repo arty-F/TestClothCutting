@@ -4,6 +4,6 @@ namespace Assets.Scripts.LevelGeneration
 {
     public interface ICuttingPointsGenerator
     {
-        public Vector3[] GenerateCuttingPoints();
+        public Vector3[] GenerateCuttingPoints(CuttingPointsGenerationSettings pointSettings, MeshGenerationSettings meshSettings);
     }
 }

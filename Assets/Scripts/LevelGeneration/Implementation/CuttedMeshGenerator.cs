@@ -5,22 +5,14 @@ namespace Assets.Scripts.LevelGeneration
 {
     public class CuttedMeshGenerator : ICuttedMeshGenerator
     {
-        private readonly MeshGenerationSettings settings;
-
-        private readonly Vector2[] cuttingPoints;
-
-        public CuttedMeshGenerator(MeshGenerationSettings settings, Vector3[] cuttingPoints)
-        {
-            this.settings = settings;
-            this.cuttingPoints = CalculateCuttingPointsForAllYCoords(cuttingPoints);
-        }
-
-        public Mesh GenerateMesh(CuttedMeshPart meshPart)
+        public Mesh GenerateMesh(MeshGenerationSettings settings, Vector3[] cuttingPoints, CuttedMeshPart meshPart)
         {
             var mesh = new Mesh();
             mesh.Clear();
 
-            mesh.vertices = CreateVertices(settings.Size, settings.StartedPoint, meshPart);
+            var fullCuttingPoints = CalculateCuttingPointsForAllYCoords(cuttingPoints);
+
+            mesh.vertices = CreateVertices(settings, settings.StartedPoint, fullCuttingPoints, meshPart);
             mesh.triangles = CreateTriangles(settings.Size);
             mesh.uv = CreateUVs(settings.Size);
 
@@ -29,14 +21,14 @@ namespace Assets.Scripts.LevelGeneration
             return mesh;
         }
 
-        private Vector3[] CreateVertices(int size, Vector3 startPoint, CuttedMeshPart meshPart)
+        private Vector3[] CreateVertices(MeshGenerationSettings settings, Vector3 startPoint, Vector2[] cuttingPoints, CuttedMeshPart meshPart)
         {
-            var vertices = new Vector3[size * size];
+            var vertices = new Vector3[settings.Size * settings.Size];
             var xOffset = settings.XOffsetBetweenParts * (int)meshPart;
 
-            for (int x = 0; x < size; x++)
+            for (int x = 0; x < settings.Size; x++)
             {
-                for (int y = 0; y < size; y++)
+                for (int y = 0; y < settings.Size; y++)
                 {
                     var currentX = (float)x;
                     if (meshPart == CuttedMeshPart.Left && x > cuttingPoints[y].x ||
@@ -45,7 +37,7 @@ namespace Assets.Scripts.LevelGeneration
                         currentX = cuttingPoints[y].x;
                     }
 
-                    vertices[y * size + x] = new Vector3(currentX + xOffset, y, 0f) + startPoint;
+                    vertices[y * settings.Size + x] = new Vector3(currentX + xOffset, y, 0f) + startPoint;
                 }
             }
 

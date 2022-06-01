@@ -1,5 +1,6 @@
 ﻿using Assets.Scripts.LevelGeneration;
 using UnityEngine;
+using Zenject;
 
 namespace Assets.Scripts.Core
 {
@@ -9,9 +10,9 @@ namespace Assets.Scripts.Core
 
         private const string _clothRootName = "ClothRoot";
 
-        private const float _stretchingStiffness = 0.99f;
+        private const float _stretchingStiffness = 1f;
 
-        private const float _bendingStiffness = 0.25f;
+        private const float _bendingStiffness = 0.75f;
 
         private const float _friction = 0.5f;
 
@@ -19,45 +20,40 @@ namespace Assets.Scripts.Core
 
         #endregion
 
-        private readonly GameObject clothPrefab;
+        [Inject]
+        private ICuttingPointsGenerator pointsGenerator;
 
-        private readonly ICuttingPointsGenerator pointsGenerator;
+        [Inject] 
+        private ICuttedMeshGenerator meshGenerator;
 
-        private readonly ICuttedMeshGenerator meshGenerator;
-
-        private readonly Vector3[] cuttingPoints;
-
-        private readonly Vector3 startedPoint;
-
-        public ClothFactory(CuttingPointsGenerationSettings cuttingPointsGenerationSettings, MeshGenerationSettings meshGenerationSettings,
-            GameObject clothPrefab)
-        {
-            pointsGenerator = new CuttingPointsGenerator(cuttingPointsGenerationSettings, meshGenerationSettings);
-            cuttingPoints = pointsGenerator.GenerateCuttingPoints();
-            meshGenerator = new CuttedMeshGenerator(meshGenerationSettings, cuttingPoints);
-            this.clothPrefab = clothPrefab;
-            this.startedPoint = meshGenerationSettings.StartedPoint;
-        }
+        private Vector3[] cuttingPoints;
 
         public Vector3[] GetCuttingPoints()
         {
             return cuttingPoints;
         }
 
-        public GameObject CreateCloth(CapsuleCollider[] sensitiveColliders)
+        public GameObject CreateCloth(CapsuleCollider[] sensitiveColliders, CuttingPointsGenerationSettings cuttingPointsGenerationSettings,
+            MeshGenerationSettings meshGenerationSettings, GameObject clothPrefab)
         {
             var root = new GameObject(_clothRootName);
 
-            CreateClothPart(root, sensitiveColliders, CuttedMeshPart.Left);
-            CreateClothPart(root, sensitiveColliders, CuttedMeshPart.Right);
+            var left = CreateClothPart(sensitiveColliders, CuttedMeshPart.Left, cuttingPointsGenerationSettings, meshGenerationSettings, clothPrefab);
+            left.transform.parent = root.transform;
+            
+            var right = CreateClothPart(sensitiveColliders, CuttedMeshPart.Right, cuttingPointsGenerationSettings, meshGenerationSettings, clothPrefab);
+            right.transform.parent = root.transform;
 
             return root;
         }
 
-        private void CreateClothPart(GameObject root, CapsuleCollider[] sensitiveColliders, CuttedMeshPart part)
+        private GameObject CreateClothPart(CapsuleCollider[] sensitiveColliders, CuttedMeshPart part,
+            CuttingPointsGenerationSettings cuttingPointsGenerationSettings, MeshGenerationSettings meshGenerationSettings, GameObject clothPrefab)
         {
-            var mesh = meshGenerator.GenerateMesh(part);
-            var clothObj = GameObject.Instantiate(clothPrefab, startedPoint, Quaternion.identity, root.transform);
+            cuttingPoints = pointsGenerator.GenerateCuttingPoints(cuttingPointsGenerationSettings, meshGenerationSettings);
+
+            var mesh = meshGenerator.GenerateMesh(meshGenerationSettings, cuttingPoints, part);
+            var clothObj = GameObject.Instantiate(clothPrefab, meshGenerationSettings.StartedPoint, Quaternion.identity);
             clothObj.GetComponent<MeshFilter>().mesh = mesh;
             clothObj.GetComponent<MeshCollider>().sharedMesh = mesh;
 
@@ -71,16 +67,21 @@ namespace Assets.Scripts.Core
             ClothSkinningCoefficient[] newConstraints;
             newConstraints = clothComponent.coefficients;
 
+            //TODO Refactoring and fixing edges calculation
             var centerPointInFirstRow = (int)(cuttingPoints[0].x * 0.5f);
             newConstraints[centerPointInFirstRow].maxDistance = 0;
-            newConstraints[centerPointInFirstRow - 2].maxDistance = 0;
+            newConstraints[centerPointInFirstRow - (meshGenerationSettings.Size / 10)].maxDistance = 0;
+            newConstraints[centerPointInFirstRow - (meshGenerationSettings.Size / 5)].maxDistance = 0;
 
             var centerPointInLastRow = (int)((cuttingPoints[cuttingPoints.Length - 1].x + 1) * 0.5f);
             newConstraints[newConstraints.Length - centerPointInLastRow].maxDistance = 0;
-            newConstraints[newConstraints.Length - centerPointInLastRow - 2].maxDistance = 0;
+            newConstraints[newConstraints.Length - centerPointInLastRow - (meshGenerationSettings.Size / 10)].maxDistance = 0;
+            newConstraints[newConstraints.Length - centerPointInLastRow - (meshGenerationSettings.Size / 5)].maxDistance = 0;
 
             clothComponent.coefficients = newConstraints;
             clothComponent.selfCollisionDistance = 1f;
+
+            return clothObj;
         }
     }
 }

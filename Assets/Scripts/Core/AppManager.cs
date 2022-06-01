@@ -1,5 +1,6 @@
 ﻿using Assets.Scripts.LevelGeneration;
 using UnityEngine;
+using Zenject;
 
 namespace Assets.Scripts.Core
 {
@@ -25,15 +26,18 @@ namespace Assets.Scripts.Core
         [SerializeField]
         private MeshGenerationSettings meshGenerationSettings;
 
+        [Inject]
+        private ClothFactory clothFactory;
+
         #endregion
 
         private void Awake()
         {
-            var cube = Instantiate(cubePrefab, Vector3.zero, Quaternion.identity);
-            var cubeColliders = cube.GetComponents<CapsuleCollider>();
+            var startPos = new Vector3(meshGenerationSettings.Size * 0.5f + meshGenerationSettings.StartedPoint.x,
+                meshGenerationSettings.StartedPoint.y, meshGenerationSettings.StartedPoint.z);
+            var cube = Instantiate(cubePrefab, startPos, Quaternion.identity);
 
-            var clothFactory = new ClothFactory(cuttingPointsGenerationSettings, meshGenerationSettings, clothPrefab);
-            _ = clothFactory.CreateCloth(cubeColliders);
+            _ = clothFactory.CreateCloth(cube.GetComponents<CapsuleCollider>(), cuttingPointsGenerationSettings, meshGenerationSettings, clothPrefab);
         }
     }
 }
