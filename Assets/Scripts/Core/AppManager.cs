@@ -33,7 +33,7 @@ namespace Assets.Scripts.Core
             var cubeColliders = cube.GetComponents<CapsuleCollider>();
 
             var clothFactory = new ClothFactory(cuttingPointsGenerationSettings, meshGenerationSettings, clothPrefab);
-            var cloth = clothFactory.CreateCloth(cubeColliders);
+            _ = clothFactory.CreateCloth(cubeColliders);
         }
     }
 }

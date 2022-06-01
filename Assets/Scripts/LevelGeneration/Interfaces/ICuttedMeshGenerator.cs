@@ -2,7 +2,7 @@
 
 namespace Assets.Scripts.LevelGeneration
 {
-    public interface IMeshGenerator
+    public interface ICuttedMeshGenerator
     {
         public Mesh GenerateMesh(CuttedMeshPart meshPart);
     }

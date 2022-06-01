@@ -5,6 +5,8 @@ namespace Assets.Scripts.Core
 {
     public class ClothFactory
     {
+        #region settings
+
         private const string _clothRootName = "ClothRoot";
 
         private const float _stretchingStiffness = 0.99f;
@@ -15,11 +17,13 @@ namespace Assets.Scripts.Core
 
         private const float _clothSolverFrequency = 120f;
 
+        #endregion
+
         private readonly GameObject clothPrefab;
 
         private readonly ICuttingPointsGenerator pointsGenerator;
 
-        private readonly IMeshGenerator meshGenerator;
+        private readonly ICuttedMeshGenerator meshGenerator;
 
         private readonly Vector3[] cuttingPoints;
 
@@ -33,6 +37,11 @@ namespace Assets.Scripts.Core
             meshGenerator = new CuttedMeshGenerator(meshGenerationSettings, cuttingPoints);
             this.clothPrefab = clothPrefab;
             this.startedPoint = meshGenerationSettings.StartedPoint;
+        }
+
+        public Vector3[] GetCuttingPoints()
+        {
+            return cuttingPoints;
         }
 
         public GameObject CreateCloth(CapsuleCollider[] sensitiveColliders)
@@ -71,8 +80,7 @@ namespace Assets.Scripts.Core
             newConstraints[newConstraints.Length - centerPointInLastRow - 2].maxDistance = 0;
 
             clothComponent.coefficients = newConstraints;
-
-            clothComponent.selfCollisionDistance = 2f;
+            clothComponent.selfCollisionDistance = 1f;
         }
     }
 }

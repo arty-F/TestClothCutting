@@ -3,7 +3,7 @@ using UnityEngine;
 
 namespace Assets.Scripts.LevelGeneration
 {
-    public class CuttedMeshGenerator : IMeshGenerator
+    public class CuttedMeshGenerator : ICuttedMeshGenerator
     {
         private readonly MeshGenerationSettings settings;
 
