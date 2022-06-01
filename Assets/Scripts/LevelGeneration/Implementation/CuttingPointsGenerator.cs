@@ -17,7 +17,7 @@ namespace Assets.Scripts.LevelGeneration
 
         public Vector3[] GenerateCuttingPoints()
         {
-            var xCenter = (float)meshSettings.XSize / 2 + meshSettings.StartedPoint.x;
+            var xCenter = (float)meshSettings.Size / 2 + meshSettings.StartedPoint.x;
             var xDirection = UnityEngine.Random.Range(0, 1) * 2 - 1;
 
             var yCuttingDistanceMin = Mathf.RoundToInt(pointSettings.YCuttingDistanceMin);
@@ -25,7 +25,7 @@ namespace Assets.Scripts.LevelGeneration
 
             var points = new List<Vector3>();
             var y = meshSettings.StartedPoint.y;
-            var yMax = y + meshSettings.YSize;
+            var yMax = y + meshSettings.Size;
             points.Add(new Vector3(xCenter, y, meshSettings.StartedPoint.z));
 
             while (y < yMax)

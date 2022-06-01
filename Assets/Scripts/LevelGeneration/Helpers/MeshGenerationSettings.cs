@@ -7,9 +7,7 @@ namespace Assets.Scripts.LevelGeneration
     {
         public Vector3 StartedPoint;
 
-        public int XSize;
-
-        public int YSize;
+        public int Size;
 
         public float XOffsetBetweenParts;
     }

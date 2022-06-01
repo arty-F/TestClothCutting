@@ -12,7 +12,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 887928126fa3af14dade44895acf0e0a, type: 3}
   m_Name: CuttingPointsGenerationSettings
   m_EditorClassIdentifier: 
-  YCuttingDistanceMin: 4
-  YCuttingDistanceMax: 10
-  XCuttingDistanceMin: 2
-  XCuttingDistanceMax: 5
+  YCuttingDistanceMin: 40
+  YCuttingDistanceMax: 100
+  XCuttingDistanceMin: 20
+  XCuttingDistanceMax: 50

@@ -13,6 +13,5 @@ MonoBehaviour:
   m_Name: MeshGenerationSettings
   m_EditorClassIdentifier: 
   StartedPoint: {x: 0, y: 0, z: 0}
-  XSize: 20
-  YSize: 20
-  XOffsetBetweenParts: 1
+  Size: 200
+  XOffsetBetweenParts: 10

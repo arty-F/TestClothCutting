@@ -20,23 +20,23 @@ namespace Assets.Scripts.LevelGeneration
             var mesh = new Mesh();
             mesh.Clear();
 
-            mesh.vertices = CreateVertices(settings.XSize, settings.YSize, settings.StartedPoint, meshPart);
-            mesh.triangles = CreateTriangles(settings.XSize, settings.YSize);
-            mesh.uv = CreateUVs(settings.XSize, settings.YSize);
+            mesh.vertices = CreateVertices(settings.Size, settings.StartedPoint, meshPart);
+            mesh.triangles = CreateTriangles(settings.Size);
+            mesh.uv = CreateUVs(settings.Size);
 
             mesh.RecalculateNormals();
 
             return mesh;
         }
 
-        private Vector3[] CreateVertices(int xSize, int ySize, Vector3 startPoint, CuttedMeshPart meshPart)
+        private Vector3[] CreateVertices(int size, Vector3 startPoint, CuttedMeshPart meshPart)
         {
-            var vertices = new Vector3[xSize * ySize];
+            var vertices = new Vector3[size * size];
             var xOffset = settings.XOffsetBetweenParts * (int)meshPart;
 
-            for (int x = 0; x < xSize; x++)
+            for (int x = 0; x < size; x++)
             {
-                for (int y = 0; y < ySize; y++)
+                for (int y = 0; y < size; y++)
                 {
                     var currentX = (float)x;
                     if (meshPart == CuttedMeshPart.Left && x > cuttingPoints[y].x ||
@@ -45,27 +45,27 @@ namespace Assets.Scripts.LevelGeneration
                         currentX = cuttingPoints[y].x;
                     }
 
-                    vertices[y * ySize + x] = new Vector3(currentX + xOffset, y, 0f) + startPoint;
+                    vertices[y * size + x] = new Vector3(currentX + xOffset, y, 0f) + startPoint;
                 }
             }
 
             return vertices;
         }
 
-        private int[] CreateTriangles(int xSize, int ySize)
+        private int[] CreateTriangles(int size)
         {
-            var triangles = new int[(xSize - 1) * (ySize - 1) * 6];
+            var triangles = new int[(size - 1) * (size - 1) * 6];
 
-            for (int x = 0, t = 0; x < xSize - 1; x++)
+            for (int x = 0, t = 0; x < size - 1; x++)
             {
-                var firstVerticeInColumn = ySize * x;
+                var firstVerticeInColumn = size * x;
 
-                for (int y = 0; y < ySize - 1; y++)
+                for (int y = 0; y < size - 1; y++)
                 {
                     triangles[t] = firstVerticeInColumn + y;
                     triangles[t + 1] = triangles[t + 4] = firstVerticeInColumn + 1 + y;
-                    triangles[t + 2] = triangles[t + 3] = firstVerticeInColumn + ySize + y;
-                    triangles[t + 5] = firstVerticeInColumn + ySize + 1 + y;
+                    triangles[t + 2] = triangles[t + 3] = firstVerticeInColumn + size + y;
+                    triangles[t + 5] = firstVerticeInColumn + size + 1 + y;
                     t += 6;
                 }
             }
@@ -73,15 +73,15 @@ namespace Assets.Scripts.LevelGeneration
             return triangles;
         }
 
-        private Vector2[] CreateUVs(int xSize, int ySize)
+        private Vector2[] CreateUVs(int size)
         {
-            var UVs = new Vector2[xSize * ySize];
+            var UVs = new Vector2[size * size];
 
-            for (int i = 0, x = 0; x < xSize; x++)
+            for (int i = 0, x = 0; x < size; x++)
             {
-                for (int y = 0; y < ySize; y++)
+                for (int y = 0; y < size; y++)
                 {
-                    UVs[i] = new Vector2((float)x / xSize, (float)y / ySize);
+                    UVs[i] = new Vector2((float)x / size, (float)y / size);
                     i++;
                 }
             }
