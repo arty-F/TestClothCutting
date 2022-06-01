@@ -9,21 +9,18 @@ namespace Assets.Scripts.LevelGeneration
 
         private readonly Vector2[] cuttingPoints;
 
-        private readonly CuttedMeshPart meshPart;
-
-        public CuttedMeshGenerator(MeshGenerationSettings settings, Vector3[] cuttingPoints, CuttedMeshPart meshPart)
+        public CuttedMeshGenerator(MeshGenerationSettings settings, Vector3[] cuttingPoints)
         {
             this.settings = settings;
             this.cuttingPoints = CalculateCuttingPointsForAllYCoords(cuttingPoints);
-            this.meshPart = meshPart;
         }
 
-        public Mesh GenerateMesh()
+        public Mesh GenerateMesh(CuttedMeshPart meshPart)
         {
             var mesh = new Mesh();
             mesh.Clear();
 
-            mesh.vertices = CreateVertices(settings.XSize, settings.YSize, settings.StartedPoint);
+            mesh.vertices = CreateVertices(settings.XSize, settings.YSize, settings.StartedPoint, meshPart);
             mesh.triangles = CreateTriangles(settings.XSize, settings.YSize);
             mesh.uv = CreateUVs(settings.XSize, settings.YSize);
 
@@ -32,27 +29,28 @@ namespace Assets.Scripts.LevelGeneration
             return mesh;
         }
 
-        private Vector3[] CreateVertices(int xSize, int ySize, Vector3 startPoint)
+        private Vector3[] CreateVertices(int xSize, int ySize, Vector3 startPoint, CuttedMeshPart meshPart)
         {
             var vertices = new Vector3[xSize * ySize];
+            var xOffset = settings.XOffsetBetweenParts * (int)meshPart;
 
             for (int x = 0; x < xSize; x++)
             {
                 for (int y = 0; y < ySize; y++)
                 {
                     var currentX = (float)x;
-                    if (x > cuttingPoints[y].x)
+                    if (meshPart == CuttedMeshPart.Left && x > cuttingPoints[y].x ||
+                        meshPart == CuttedMeshPart.Right && x < cuttingPoints[y].x)
                     {
                         currentX = cuttingPoints[y].x;
                     }
 
-                    vertices[y * ySize + x] = new Vector3(currentX, y, 0f) + startPoint;
+                    vertices[y * ySize + x] = new Vector3(currentX + xOffset, y, 0f) + startPoint;
                 }
             }
 
             return vertices;
         }
-
 
         private int[] CreateTriangles(int xSize, int ySize)
         {

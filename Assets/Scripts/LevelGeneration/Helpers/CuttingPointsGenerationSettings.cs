@@ -2,7 +2,8 @@
 
 namespace Assets.Scripts.LevelGeneration
 {
-    public class CuttingPointsGenerationSettings
+    [CreateAssetMenu(fileName = "CuttingPointsGenerationSettings", menuName = "ScriptableObjects/CuttingPointsGenerationSettings")]
+    public class CuttingPointsGenerationSettings : ScriptableObject
     {
         public float YCuttingDistanceMin;
 

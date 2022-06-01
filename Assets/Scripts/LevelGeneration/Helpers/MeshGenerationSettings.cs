@@ -2,12 +2,15 @@
 
 namespace Assets.Scripts.LevelGeneration
 {
-    public class MeshGenerationSettings
+    [CreateAssetMenu(fileName = "MeshGenerationSettings", menuName = "ScriptableObjects/MeshGenerationSettings")]
+    public class MeshGenerationSettings : ScriptableObject
     {
         public Vector3 StartedPoint;
 
         public int XSize;
 
         public int YSize;
+
+        public float XOffsetBetweenParts;
     }
 }
