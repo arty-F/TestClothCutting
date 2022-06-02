@@ -4,7 +4,7 @@ using Zenject;
 
 namespace Assets.Scripts.Core
 {
-    public class ClothFactory
+    public class ClothFactory : IClothFactory
     {
         #region settings
 
@@ -67,7 +67,7 @@ namespace Assets.Scripts.Core
             ClothSkinningCoefficient[] newConstraints;
             newConstraints = clothComponent.coefficients;
 
-            //TODO Refactoring and fixing edges calculation
+            //TODO Refactoring and improve edges calculation
             var centerPointInFirstRow = (int)(cuttingPoints[0].x * 0.5f);
             newConstraints[centerPointInFirstRow].maxDistance = 0;
             newConstraints[centerPointInFirstRow - (meshGenerationSettings.Size / 10)].maxDistance = 0;

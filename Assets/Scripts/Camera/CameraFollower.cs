@@ -1,47 +1,37 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using Assets.Scripts.Core;
 using UnityEngine;
+using Zenject;
 
 namespace Assets.Scripts.Camera
 {
     public class CameraFollower : MonoBehaviour
     {
-        #region private
+        #region settings
 
-        private bool isFollowing;
-
-        private Transform target;
-
-        private Vector3 offset;
+        private const float _zOffset = -60f;
 
         #endregion
 
-        private void Awake()
+        [Inject]
+        private LevelManager levelManager;
+
+        private void Start()
         {
-            offset = transform.position;
+            levelManager.TrackedObjectStartsMoving += OnObjectStartsMoving;
+            //TODO Calculating started position and zoom
         }
 
-        public void StartFollow(Transform target)
+        private void OnObjectStartsMoving(GameObject obj)
         {
-            isFollowing = true;
-            this.target = target;
+            //TODO Smooth following and cube size calculating
+            transform.position = new Vector3(obj.transform.position.x, obj.transform.position.y, obj.transform.position.z + _zOffset);
+            transform.parent = obj.transform;
+            
         }
 
-        public void StopFollow()
+        private void OnDestroy()
         {
-            isFollowing = false;
-            target = null;
+            levelManager.TrackedObjectStartsMoving -= OnObjectStartsMoving;
         }
-
-        private void Update()
-        {
-            if (!isFollowing)
-            {
-                return;
-            }
-
-            transform.position = target.position + offset;
-        }
-
     }
 }

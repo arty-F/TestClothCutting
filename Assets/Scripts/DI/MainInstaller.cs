@@ -5,10 +5,14 @@ using Zenject;
 
 public class MainInstaller : MonoInstaller
 {
+    [SerializeField]
+    private LevelManager levelManager;
+
     public override void InstallBindings()
     {
-        Container.Bind<ClothFactory>().AsSingle().NonLazy();
+        Container.Bind<IClothFactory>().To<ClothFactory>().AsSingle().NonLazy();
         Container.Bind<ICuttingPointsGenerator>().To<CuttingPointsGenerator>().AsSingle().NonLazy();
         Container.Bind<ICuttedMeshGenerator>().To<CuttedMeshGenerator>().AsSingle().NonLazy();
+        Container.Bind<LevelManager>().FromInstance(levelManager).AsSingle().NonLazy();
     }
 }
