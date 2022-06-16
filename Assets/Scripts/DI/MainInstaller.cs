@@ -17,9 +17,6 @@ public class MainInstaller : MonoInstaller
     [SerializeField]
     private MeshGenerationSettings meshGenerationSettings;
 
-    [SerializeField]
-    private LevelManager levelManager;
-
     public override void InstallBindings()
     {
         gameStateMachine = new GameStateMachineInitializer().Create();
@@ -32,6 +29,5 @@ public class MainInstaller : MonoInstaller
         Container.Bind<IClothCreator>().To<ClothCreator>().AsSingle();
         Container.Bind<ICuttingPointsGenerator>().To<CuttingPointsGenerator>().AsSingle();
         Container.Bind<ICuttedMeshGenerator>().To<CuttedMeshGenerator>().AsSingle();
-        Container.Bind<LevelManager>().FromInstance(levelManager).AsSingle();
     }
 }

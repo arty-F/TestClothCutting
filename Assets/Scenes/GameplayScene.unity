@@ -378,34 +378,14 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 511259883}
-  - component: {fileID: 511259882}
+  - component: {fileID: 511259884}
   m_Layer: 0
-  m_Name: LevelManager
+  m_Name: LevelConstructor
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
   m_IsActive: 1
---- !u!114 &511259882
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 511259881}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: c932efbcfc9a24840b7969788a89a1c8, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  clothPrefab: {fileID: 2544520363024046669, guid: f11bfff8e139a5d4d895f015de83c8c9,
-    type: 3}
-  cubePrefab: {fileID: 2679307830966971264, guid: 516a5495a915ed242984d92161f627f1,
-    type: 3}
-  cuttingPointsGenerationSettings: {fileID: 11400000, guid: 9ee1f3fe263df2145b70f9fb63878fa5,
-    type: 2}
-  meshGenerationSettings: {fileID: 11400000, guid: 9de95bf5aaff4224a93606f9dc986325,
-    type: 2}
 --- !u!4 &511259883
 Transform:
   m_ObjectHideFlags: 0
@@ -419,8 +399,20 @@ Transform:
   m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 0}
-  m_RootOrder: 3
+  m_RootOrder: 5
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &511259884
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 511259881}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: b3bb9c010d5524545bf0624d2eea2cd7, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1 &832575517
 GameObject:
   m_ObjectHideFlags: 0
@@ -512,7 +504,7 @@ Transform:
   m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 0}
-  m_RootOrder: 5
+  m_RootOrder: 4
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &2127071517
 GameObject:
@@ -550,7 +542,7 @@ MonoBehaviour:
     type: 2}
   meshGenerationSettings: {fileID: 11400000, guid: 9de95bf5aaff4224a93606f9dc986325,
     type: 2}
-  levelManager: {fileID: 511259882}
+  levelManager: {fileID: 0}
 --- !u!114 &2127071519
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -596,5 +588,5 @@ Transform:
   m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 0}
-  m_RootOrder: 4
+  m_RootOrder: 3
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
