@@ -38,7 +38,7 @@ public class MainInstaller : MonoInstaller
         Container.Bind<PlayerUnit>().FromInstance(player).AsSingle();
     }
 
-    public GameObject CreateAndRegisterPlayer()
+    public GameObject CreatePlayer()
     {
         var playerObj = Container.InstantiatePrefab(levelObjectsSettings.CubePrefab, 
             meshGenerationSettings.BottomCenter(), Quaternion.identity, null);

@@ -1,7 +1,6 @@
 ﻿using Assets.Scripts.StateMachine;
 using System.Threading.Tasks;
 using UnityEngine;
-using Zenject;
 
 namespace Assets.Scripts.Player
 {

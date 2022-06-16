@@ -54,7 +54,7 @@ namespace Assets.Scripts.Core
 
         private GameObject CreateCube()
         {
-            return diInstaller.CreateAndRegisterPlayer();
+            return diInstaller.CreatePlayer();
         }
 
         private void SetCubeMovingTrajectory(GameObject cube, Vector3[] points)
