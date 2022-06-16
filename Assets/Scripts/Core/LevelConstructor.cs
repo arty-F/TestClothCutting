@@ -1,66 +1,59 @@
 ﻿using Assets.Scripts.LevelGeneration;
 using Assets.Scripts.Player;
-using System;
-using System.Collections;
+using Assets.Scripts.StateMachine;
 using UnityEngine;
 using Zenject;
 
 namespace Assets.Scripts.Core
 {
-    public class LevelManager : MonoBehaviour
+    public class LevelConstructor : MonoBehaviour
     {
-        #region settings
-
-        private const float _gameStartingDelay = 1f;
-
-        #endregion
-
-        #region events
-
-        public event Action<GameObject> TrackedObjectStartsMoving;
-
-        #endregion
-
         #region private fields
 
-        [SerializeField]
-        private GameObject clothPrefab;
+        [Inject]
+        private LevelObjectsSettings levelObjectsSettings;
 
-        [SerializeField]
-        private GameObject cubePrefab;
-
-        [SerializeField]
+        [Inject]
         private CuttingPointsGenerationSettings cuttingPointsGenerationSettings;
 
-        [SerializeField]
+        [Inject]
         private MeshGenerationSettings meshGenerationSettings;
 
         [Inject]
         private IClothCreator clothCreator;
 
+        [Inject]
+        private StateMachine<GameState> gameStateMachine;
+
         #endregion
 
-        private void Start()
+        private void Awake()
         {
-            StartLevel();
+            gameStateMachine.Subscribe(GameState.Default, GameState.AppLoaded, OnAppLoaded);
         }
 
-        private void StartLevel()
+        private void OnAppLoaded()
+        {
+            ConstructLevel();
+        }
+
+        private void ConstructLevel()
         {
             var cube = CreateCube();
 
-            clothCreator.CreateCloth(cube.GetComponents<CapsuleCollider>(), cuttingPointsGenerationSettings, meshGenerationSettings, clothPrefab);
+            clothCreator.CreateCloth(cube.GetComponents<CapsuleCollider>(), cuttingPointsGenerationSettings, meshGenerationSettings, 
+                levelObjectsSettings.ClothPrefab);
 
             SetCubeMovingTrajectory(cube, clothCreator.GetCuttingPoints());
 
-            StartCoroutine(WaitAndStartMoving(cube));
+            gameStateMachine.ChangeStateTo(GameState.LevelConstructed);
         }
 
         private GameObject CreateCube()
         {
             var startPos = new Vector3(meshGenerationSettings.Size * 0.5f + meshGenerationSettings.StartedPoint.x,
                 meshGenerationSettings.StartedPoint.y, meshGenerationSettings.StartedPoint.z);
-            return Instantiate(cubePrefab, startPos, Quaternion.identity);
+            return Instantiate(levelObjectsSettings.CubePrefab, startPos, Quaternion.identity);
         }
 
         private void SetCubeMovingTrajectory(GameObject cube, Vector3[] points)
@@ -68,11 +61,10 @@ namespace Assets.Scripts.Core
             if (cube.TryGetComponent<PlayerMover>(out var mover))
             {
                 mover.SetMovingPoints(points);
-                //mover.FinishReached += OnFinishPointReached;
             }
         }
 
-        private IEnumerator WaitAndStartMoving(GameObject cube)
+        /*private IEnumerator WaitAndStartMoving(GameObject cube)
         {
             yield return new WaitForSeconds(_gameStartingDelay);
 
@@ -81,6 +73,6 @@ namespace Assets.Scripts.Core
                 mover.StartMove();
             }
             TrackedObjectStartsMoving?.Invoke(cube);
-        }
+        }*/
     }
 }

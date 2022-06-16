@@ -4,7 +4,7 @@
     {
         Default,
         AppLoaded,
-        LevelGanerated,
+        LevelConstructed,
         ObjectStartMoving,
         ObjectEndMoving
     }

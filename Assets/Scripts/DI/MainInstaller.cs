@@ -6,15 +6,28 @@ using Zenject;
 
 public class MainInstaller : MonoInstaller
 {
+    private StateMachine<GameState> gameStateMachine;
+
+    [SerializeField]
+    private LevelObjectsSettings levelObjectsSettings;
+
+    [SerializeField]
+    private CuttingPointsGenerationSettings cuttingPointsGenerationSettings;
+
+    [SerializeField]
+    private MeshGenerationSettings meshGenerationSettings;
+
     [SerializeField]
     private LevelManager levelManager;
-
-    private StateMachine<GameState> gameStateMachine;
 
     public override void InstallBindings()
     {
         gameStateMachine = new GameStateMachineInitializer().Create();
         Container.Bind<StateMachine<GameState>>().FromInstance(gameStateMachine).AsSingle();
+
+        Container.Bind<LevelObjectsSettings>().FromInstance(levelObjectsSettings).AsSingle();
+        Container.Bind<CuttingPointsGenerationSettings>().FromInstance(cuttingPointsGenerationSettings).AsSingle();
+        Container.Bind<MeshGenerationSettings>().FromInstance(meshGenerationSettings).AsSingle();
 
         Container.Bind<IClothCreator>().To<ClothCreator>().AsSingle();
         Container.Bind<ICuttingPointsGenerator>().To<CuttingPointsGenerator>().AsSingle();
