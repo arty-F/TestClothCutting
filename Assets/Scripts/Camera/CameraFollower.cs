@@ -10,7 +10,7 @@ namespace Assets.Scripts.Camera
     {
         #region settings
 
-        private const float _zOffsetMpy = -60f;
+        private const float _zOffset = -60f;
 
         #endregion
 
@@ -43,7 +43,7 @@ namespace Assets.Scripts.Camera
         private void OnObjectStartMoving()
         {
             var playerPos = player.PlayerObj.transform.position;
-            transform.position = new Vector3(playerPos.x, playerPos.y, playerPos.z + _zOffsetMpy);
+            transform.position = new Vector3(playerPos.x, playerPos.y, playerPos.z + _zOffset);
             transform.parent = player.PlayerObj.transform;
         }
     }
