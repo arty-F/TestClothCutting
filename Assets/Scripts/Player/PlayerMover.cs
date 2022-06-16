@@ -1,4 +1,4 @@
-﻿using Assets.Scripts.Core;
+﻿using Assets.Scripts.StateMachine;
 using System;
 using UnityEngine;
 using Zenject;
@@ -21,6 +21,9 @@ namespace Assets.Scripts.Player
 
         #region private fields
 
+        [Inject]
+        private StateMachine<GameState> gameStateMachine;
+
         private Vector3[] checkpoints;
 
         private int nextPointIndex;
@@ -29,7 +32,12 @@ namespace Assets.Scripts.Player
 
         #endregion
 
-        public void StartMove()
+        private void Awake()
+        {
+            gameStateMachine.Subscribe(GameState.LevelConstructed, GameState.ObjectStartMoving, OnStartMoving);
+        }
+
+        public void OnStartMoving()
         {
             isMoving = true;
         }

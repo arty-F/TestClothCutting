@@ -1,6 +1,5 @@
 ﻿using Assets.Scripts.StateMachine;
-using System;
-using System.Collections.Generic;
+using System.Collections;
 using UnityEngine;
 using Zenject;
 
@@ -8,9 +7,9 @@ namespace Assets.Scripts.Player
 {
     public class PlayerUnit : MonoBehaviour
     {
-        #region events
+        #region settings
 
-
+        private const float _moveDelay = 1f;
 
         #endregion
 
@@ -19,12 +18,19 @@ namespace Assets.Scripts.Player
 
         private void Awake()
         {
-
+            gameStateMachine.Subscribe(GameState.AppLoaded, GameState.LevelConstructed, OnLevelConstructed);
         }
 
-        private void Start()
+        private void OnLevelConstructed()
         {
-            
+            StartCoroutine(WaitAndMove());
+        }
+
+        private IEnumerator WaitAndMove()
+        {
+            yield return new WaitForSeconds(_moveDelay);
+
+            gameStateMachine.ChangeStateTo(GameState.ObjectStartMoving);
         }
     }
 }

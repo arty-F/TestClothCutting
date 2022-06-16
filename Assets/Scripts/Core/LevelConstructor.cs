@@ -25,11 +25,8 @@ namespace Assets.Scripts.Core
         [Inject]
         private StateMachine<GameState> gameStateMachine;
 
-        /*[Inject]
-        private PlayerUnit player;*/
-
         [Inject]
-        private DiContainer diContainer;
+        private MainInstaller diInstaller;
 
         #endregion
 
@@ -57,9 +54,7 @@ namespace Assets.Scripts.Core
 
         private GameObject CreateCube()
         {
-            var startPos = new Vector3(meshGenerationSettings.Size * 0.5f + meshGenerationSettings.StartedPoint.x,
-                meshGenerationSettings.StartedPoint.y, meshGenerationSettings.StartedPoint.z);
-            return diContainer.InstantiatePrefab(levelObjectsSettings.CubePrefab, startPos, Quaternion.identity, null);
+            return diInstaller.CreateAndRegisterPlayer();
         }
 
         private void SetCubeMovingTrajectory(GameObject cube, Vector3[] points)
@@ -69,16 +64,5 @@ namespace Assets.Scripts.Core
                 mover.SetMovingPoints(points);
             }
         }
-
-        /*private IEnumerator WaitAndStartMoving(GameObject cube)
-        {
-            yield return new WaitForSeconds(_gameStartingDelay);
-
-            if (cube.TryGetComponent<PlayerMover>(out var mover))
-            {
-                mover.StartMove();
-            }
-            TrackedObjectStartsMoving?.Invoke(cube);
-        }*/
     }
 }

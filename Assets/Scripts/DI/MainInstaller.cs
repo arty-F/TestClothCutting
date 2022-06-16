@@ -29,5 +29,20 @@ public class MainInstaller : MonoInstaller
         Container.Bind<IClothCreator>().To<ClothCreator>().AsSingle();
         Container.Bind<ICuttingPointsGenerator>().To<CuttingPointsGenerator>().AsSingle();
         Container.Bind<ICuttedMeshGenerator>().To<CuttedMeshGenerator>().AsSingle();
+
+        Container.Bind<MainInstaller>().FromInstance(this).AsSingle();
+    }
+
+    public GameObject CreateAndRegisterPlayer()
+    {
+        var startPos = new Vector3(meshGenerationSettings.Size * 0.5f + meshGenerationSettings.StartedPoint.x,
+                meshGenerationSettings.StartedPoint.y, meshGenerationSettings.StartedPoint.z);
+
+        var player = Container.InstantiatePrefabForComponent<PlayerUnit>(levelObjectsSettings.CubePrefab, startPos, 
+            Quaternion.identity, null);
+
+        Container.Bind<PlayerUnit>().FromInstance(player).AsSingle();
+
+        return player.gameObject;
     }
 }
