@@ -12,12 +12,9 @@ namespace Assets.Scripts.Camera
 
         #endregion
 
-        [Inject]
-        private LevelManager levelManager;
-
         private void Start()
         {
-            levelManager.TrackedObjectStartsMoving += OnObjectStartsMoving;
+            //levelManager.TrackedObjectStartsMoving += OnObjectStartsMoving;
             //TODO Calculating started position and zoom
         }
 
@@ -31,7 +28,7 @@ namespace Assets.Scripts.Camera
 
         private void OnDestroy()
         {
-            levelManager.TrackedObjectStartsMoving -= OnObjectStartsMoving;
+            //levelManager.TrackedObjectStartsMoving -= OnObjectStartsMoving;
         }
     }
 }

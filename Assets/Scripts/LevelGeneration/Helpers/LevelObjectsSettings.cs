@@ -8,5 +8,7 @@ namespace Assets.Scripts.LevelGeneration
         public GameObject ClothPrefab;
 
         public GameObject CubePrefab;
+
+        public GameObject CurrentPlayerObject;
     }
 }

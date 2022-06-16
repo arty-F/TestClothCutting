@@ -25,6 +25,12 @@ namespace Assets.Scripts.Core
         [Inject]
         private StateMachine<GameState> gameStateMachine;
 
+        /*[Inject]
+        private PlayerUnit player;*/
+
+        [Inject]
+        private DiContainer diContainer;
+
         #endregion
 
         private void Awake()
@@ -44,7 +50,7 @@ namespace Assets.Scripts.Core
             clothCreator.CreateCloth(cube.GetComponents<CapsuleCollider>(), cuttingPointsGenerationSettings, meshGenerationSettings, 
                 levelObjectsSettings.ClothPrefab);
 
-            SetCubeMovingTrajectory(cube, clothCreator.GetCuttingPoints());
+            SetCubeMovingTrajectory(cube.gameObject, clothCreator.GetCuttingPoints());
 
             gameStateMachine.ChangeStateTo(GameState.LevelConstructed);
         }
@@ -53,7 +59,7 @@ namespace Assets.Scripts.Core
         {
             var startPos = new Vector3(meshGenerationSettings.Size * 0.5f + meshGenerationSettings.StartedPoint.x,
                 meshGenerationSettings.StartedPoint.y, meshGenerationSettings.StartedPoint.z);
-            return Instantiate(levelObjectsSettings.CubePrefab, startPos, Quaternion.identity);
+            return diContainer.InstantiatePrefab(levelObjectsSettings.CubePrefab, startPos, Quaternion.identity, null);
         }
 
         private void SetCubeMovingTrajectory(GameObject cube, Vector3[] points)

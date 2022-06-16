@@ -542,7 +542,7 @@ MonoBehaviour:
     type: 2}
   meshGenerationSettings: {fileID: 11400000, guid: 9de95bf5aaff4224a93606f9dc986325,
     type: 2}
-  levelManager: {fileID: 0}
+  player: {fileID: 1601438042685729561, guid: 516a5495a915ed242984d92161f627f1, type: 3}
 --- !u!114 &2127071519
 MonoBehaviour:
   m_ObjectHideFlags: 0

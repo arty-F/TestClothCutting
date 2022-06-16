@@ -1,5 +1,5 @@
-using Assets.Scripts.Core;
 using Assets.Scripts.LevelGeneration;
+using Assets.Scripts.Player;
 using Assets.Scripts.StateMachine;
 using UnityEngine;
 using Zenject;
