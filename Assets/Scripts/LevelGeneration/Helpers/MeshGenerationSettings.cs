@@ -10,5 +10,26 @@ namespace Assets.Scripts.LevelGeneration
         public int Size;
 
         public float XOffsetBetweenParts;
+
+        private Vector3 bottomCenter;
+
+        private Vector3 middleCenter;
+
+        private void OnEnable()
+        {
+            var halfSize = Size * 0.5f;
+            bottomCenter = new Vector3(halfSize + StartedPoint.x, StartedPoint.y, StartedPoint.z);
+            middleCenter = new Vector3(halfSize + StartedPoint.x, halfSize + StartedPoint.y, StartedPoint.z);
+        }
+
+        public Vector3 BottomCenter()
+        {
+            return bottomCenter;
+        }
+
+        public Vector3 MiddleCenter()
+        {
+            return middleCenter;
+        }
     }
 }

@@ -17,6 +17,8 @@ public class MainInstaller : MonoInstaller
     [SerializeField]
     private MeshGenerationSettings meshGenerationSettings;
 
+    private PlayerUnit player;
+
     public override void InstallBindings()
     {
         gameStateMachine = new GameStateMachineInitializer().Create();
@@ -31,18 +33,18 @@ public class MainInstaller : MonoInstaller
         Container.Bind<ICuttedMeshGenerator>().To<CuttedMeshGenerator>().AsSingle();
 
         Container.Bind<MainInstaller>().FromInstance(this).AsSingle();
+
+        player = new PlayerUnit(gameStateMachine);
+        Container.Bind<PlayerUnit>().FromInstance(player).AsSingle();
     }
 
     public GameObject CreateAndRegisterPlayer()
     {
-        var startPos = new Vector3(meshGenerationSettings.Size * 0.5f + meshGenerationSettings.StartedPoint.x,
-                meshGenerationSettings.StartedPoint.y, meshGenerationSettings.StartedPoint.z);
+        var playerObj = Container.InstantiatePrefab(levelObjectsSettings.CubePrefab, 
+            meshGenerationSettings.BottomCenter(), Quaternion.identity, null);
 
-        var player = Container.InstantiatePrefabForComponent<PlayerUnit>(levelObjectsSettings.CubePrefab, startPos, 
-            Quaternion.identity, null);
+        player.SetPlayerObj(playerObj);
 
-        Container.Bind<PlayerUnit>().FromInstance(player).AsSingle();
-
-        return player.gameObject;
+        return playerObj;
     }
 }

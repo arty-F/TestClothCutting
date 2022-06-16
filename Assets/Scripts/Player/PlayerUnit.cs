@@ -1,34 +1,46 @@
 ﻿using Assets.Scripts.StateMachine;
-using System.Collections;
+using System.Threading.Tasks;
 using UnityEngine;
 using Zenject;
 
 namespace Assets.Scripts.Player
 {
-    public class PlayerUnit : MonoBehaviour
+    public class PlayerUnit
     {
         #region settings
 
-        private const float _moveDelay = 1f;
+        private const int _moveDelay = 1000;
 
         #endregion
 
-        [Inject]
+        public GameObject PlayerObj { get; private set; }
+
         private StateMachine<GameState> gameStateMachine;
 
-        private void Awake()
+        public PlayerUnit(StateMachine<GameState> gameStateMachine)
         {
+            this.gameStateMachine = gameStateMachine;
             gameStateMachine.Subscribe(GameState.AppLoaded, GameState.LevelConstructed, OnLevelConstructed);
+        }
+
+        public void SetPlayerObj(GameObject playerObj)
+        {
+            if (PlayerObj != null)
+            {
+                return;
+            }
+
+            PlayerObj = playerObj;
         }
 
         private void OnLevelConstructed()
         {
-            StartCoroutine(WaitAndMove());
+            WaitAndMove();
         }
 
-        private IEnumerator WaitAndMove()
+        private async void WaitAndMove()
         {
-            yield return new WaitForSeconds(_moveDelay);
+            await Task.Delay(_moveDelay);
 
             gameStateMachine.ChangeStateTo(GameState.ObjectStartMoving);
         }
