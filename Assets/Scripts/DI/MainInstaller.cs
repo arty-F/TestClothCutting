@@ -1,5 +1,6 @@
 using Assets.Scripts.Core;
 using Assets.Scripts.LevelGeneration;
+using Assets.Scripts.StateMachine;
 using UnityEngine;
 using Zenject;
 
@@ -8,11 +9,16 @@ public class MainInstaller : MonoInstaller
     [SerializeField]
     private LevelManager levelManager;
 
+    private StateMachine<GameState> gameStateMachine;
+
     public override void InstallBindings()
     {
-        Container.Bind<IClothCreator>().To<ClothCreator>().AsSingle().NonLazy();
-        Container.Bind<ICuttingPointsGenerator>().To<CuttingPointsGenerator>().AsSingle().NonLazy();
-        Container.Bind<ICuttedMeshGenerator>().To<CuttedMeshGenerator>().AsSingle().NonLazy();
-        Container.Bind<LevelManager>().FromInstance(levelManager).AsSingle().NonLazy();
+        gameStateMachine = new GameStateMachineInitializer().Create();
+        Container.Bind<StateMachine<GameState>>().FromInstance(gameStateMachine).AsSingle();
+
+        Container.Bind<IClothCreator>().To<ClothCreator>().AsSingle();
+        Container.Bind<ICuttingPointsGenerator>().To<CuttingPointsGenerator>().AsSingle();
+        Container.Bind<ICuttedMeshGenerator>().To<CuttedMeshGenerator>().AsSingle();
+        Container.Bind<LevelManager>().FromInstance(levelManager).AsSingle();
     }
 }
