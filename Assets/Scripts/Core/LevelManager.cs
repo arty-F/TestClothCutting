@@ -37,7 +37,7 @@ namespace Assets.Scripts.Core
         private MeshGenerationSettings meshGenerationSettings;
 
         [Inject]
-        private IClothFactory clothFactory;
+        private IClothCreator clothCreator;
 
         #endregion
 
@@ -50,9 +50,9 @@ namespace Assets.Scripts.Core
         {
             var cube = CreateCube();
 
-            _ = clothFactory.CreateCloth(cube.GetComponents<CapsuleCollider>(), cuttingPointsGenerationSettings, meshGenerationSettings, clothPrefab);
+            clothCreator.CreateCloth(cube.GetComponents<CapsuleCollider>(), cuttingPointsGenerationSettings, meshGenerationSettings, clothPrefab);
 
-            SetCubeMovingTrajectory(cube, clothFactory.GetCuttingPoints());
+            SetCubeMovingTrajectory(cube, clothCreator.GetCuttingPoints());
 
             StartCoroutine(WaitAndStartMoving(cube));
         }

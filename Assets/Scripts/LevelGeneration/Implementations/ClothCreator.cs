@@ -1,10 +1,9 @@
-﻿using Assets.Scripts.LevelGeneration;
-using UnityEngine;
+﻿using UnityEngine;
 using Zenject;
 
-namespace Assets.Scripts.Core
+namespace Assets.Scripts.LevelGeneration
 {
-    public class ClothFactory : IClothFactory
+    public class ClothCreator : IClothCreator
     {
         #region settings
 
@@ -33,7 +32,7 @@ namespace Assets.Scripts.Core
             return cuttingPoints;
         }
 
-        public GameObject CreateCloth(CapsuleCollider[] sensitiveColliders, CuttingPointsGenerationSettings cuttingPointsGenerationSettings,
+        public void CreateCloth(CapsuleCollider[] sensitiveColliders, CuttingPointsGenerationSettings cuttingPointsGenerationSettings,
             MeshGenerationSettings meshGenerationSettings, GameObject clothPrefab)
         {
             var root = new GameObject(_clothRootName);
@@ -43,8 +42,6 @@ namespace Assets.Scripts.Core
             
             var right = CreateClothPart(sensitiveColliders, CuttedMeshPart.Right, cuttingPointsGenerationSettings, meshGenerationSettings, clothPrefab);
             right.transform.parent = root.transform;
-
-            return root;
         }
 
         private GameObject CreateClothPart(CapsuleCollider[] sensitiveColliders, CuttedMeshPart part,
