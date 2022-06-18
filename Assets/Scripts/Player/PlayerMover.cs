@@ -1,5 +1,4 @@
 ﻿using Assets.Scripts.StateMachine;
-using System;
 using UnityEngine;
 using Zenject;
 
@@ -10,12 +9,6 @@ namespace Assets.Scripts.Player
         #region settings
 
         private const float _speed = 10f;
-
-        #endregion
-
-        #region events
-
-        public event Action FinishReached;
 
         #endregion
 
@@ -68,7 +61,7 @@ namespace Assets.Scripts.Player
                 if (nextPointIndex == checkpoints.Length - 1)
                 {
                     isMoving = false;
-                    FinishReached?.Invoke();
+                    gameStateMachine.ChangeStateTo(GameState.ObjectEndMoving);
                     return;
                 }
 

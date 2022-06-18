@@ -15,7 +15,7 @@ namespace Assets.Scripts.StateMachine
             defaultState.SetNextTransitions(new List<StateNode<GameState>>() { appLoadedState });
             appLoadedState.SetNextTransitions(new List<StateNode<GameState>>() { levelConstructedState });
             levelConstructedState.SetNextTransitions(new List<StateNode<GameState>>() { objectStartMovingState });
-            objectEndMovingState.SetNextTransitions(new List<StateNode<GameState>>() { objectEndMovingState });
+            objectStartMovingState.SetNextTransitions(new List<StateNode<GameState>>() { objectEndMovingState });
 
             return new StateMachine<GameState>(defaultState);
         }
