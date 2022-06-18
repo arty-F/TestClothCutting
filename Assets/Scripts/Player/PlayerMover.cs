@@ -8,7 +8,9 @@ namespace Assets.Scripts.Player
     {
         #region settings
 
-        private const float _speed = 10f;
+        private const float _moveSpeed = 10f;
+
+        private const float _rotationDamping = 2f;
 
         #endregion
 
@@ -22,6 +24,8 @@ namespace Assets.Scripts.Player
         private int nextPointIndex;
 
         private bool isMoving;
+
+        private bool isRotatedToNextPoint;
 
         #endregion
 
@@ -49,9 +53,7 @@ namespace Assets.Scripts.Player
             }
 
             MoveToNextPoint();
-
-            //TODO Swipes
-            //TODO Rotation to point
+            RotateToNextPoint();
         }
 
         private void MoveToNextPoint()
@@ -60,15 +62,44 @@ namespace Assets.Scripts.Player
             {
                 if (nextPointIndex == checkpoints.Length - 1)
                 {
-                    isMoving = false;
-                    gameStateMachine.ChangeStateTo(GameState.ObjectEndMoving);
+                    FinishPointReached();
                     return;
                 }
 
                 nextPointIndex++;
+                isRotatedToNextPoint = false;
             }
 
-            transform.position = Vector3.MoveTowards(transform.position, checkpoints[nextPointIndex], _speed * Time.deltaTime);
+            transform.position = Vector3.MoveTowards(transform.position, checkpoints[nextPointIndex], _moveSpeed * Time.deltaTime);
+        }
+
+        private void RotateToNextPoint()
+        {
+            if (isRotatedToNextPoint)
+            {
+                return;
+            }
+
+            var targetPoint = checkpoints[nextPointIndex] - transform.position;
+            var zAngle = Vector3.Angle(targetPoint, transform.up);
+
+            if (transform.eulerAngles.z == zAngle)
+            {
+                isRotatedToNextPoint = true;
+                return;
+            }
+
+            var cross = Vector3.Cross(targetPoint, transform.up);
+            if (cross.z > 0) zAngle = -zAngle;
+            var desiredRotation = Quaternion.Euler(transform.eulerAngles.x, transform.eulerAngles.y, transform.eulerAngles.z + zAngle);
+
+            transform.rotation = Quaternion.Lerp(transform.rotation, desiredRotation, Time.deltaTime * _rotationDamping);
+        }
+
+        private void FinishPointReached()
+        {
+            isMoving = false;
+            gameStateMachine.ChangeStateTo(GameState.ObjectEndMoving);
         }
     }
 }
