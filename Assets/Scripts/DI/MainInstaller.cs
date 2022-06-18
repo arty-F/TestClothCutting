@@ -29,7 +29,7 @@ public class MainInstaller : MonoInstaller
         Container.Bind<MeshGenerationSettings>().FromInstance(meshGenerationSettings).AsSingle();
 
         Container.Bind<IClothCreator>().To<ClothCreator>().AsSingle();
-        Container.Bind<ICuttingPointsGenerator>().To<CuttingPointsGenerator>().AsSingle();
+        Container.Bind<ICuttingPointsGenerator>().To<ZigzagCuttingPointsGenerator>().AsSingle();
         Container.Bind<ICuttedMeshGenerator>().To<CuttedMeshGenerator>().AsSingle();
 
         Container.Bind<MainInstaller>().FromInstance(this).AsSingle();

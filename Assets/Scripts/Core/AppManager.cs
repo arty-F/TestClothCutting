@@ -7,8 +7,12 @@ namespace Assets.Scripts.Core
 {
     public class AppManager : MonoBehaviour
     {
+        #region private fields
+
         [Inject]
         private StateMachine<GameState> gameStateMachine;
+
+        #endregion
 
         private void Awake()
         {

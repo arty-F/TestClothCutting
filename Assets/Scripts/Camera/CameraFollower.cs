@@ -14,6 +14,8 @@ namespace Assets.Scripts.Camera
 
         #endregion
 
+        #region private fields
+
         [Inject]
         private MeshGenerationSettings meshGenerationSettings;
 
@@ -22,6 +24,8 @@ namespace Assets.Scripts.Camera
 
         [Inject]
         private PlayerUnit player;
+
+        #endregion
 
         private void Awake()
         {

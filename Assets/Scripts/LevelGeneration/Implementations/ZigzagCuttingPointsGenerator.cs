@@ -3,7 +3,7 @@ using UnityEngine;
 
 namespace Assets.Scripts.LevelGeneration
 {
-    public class CuttingPointsGenerator : ICuttingPointsGenerator
+    public class ZigzagCuttingPointsGenerator : ICuttingPointsGenerator
     {
         public Vector3[] GenerateCuttingPoints(CuttingPointsGenerationSettings pointSettings, MeshGenerationSettings meshSettings)
         {
