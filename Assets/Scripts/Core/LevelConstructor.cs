@@ -6,6 +6,9 @@ using Zenject;
 
 namespace Assets.Scripts.Core
 {
+    /// <summary>
+    /// Constructs game level, when app is starting.
+    /// </summary>
     public class LevelConstructor : MonoBehaviour
     {
         #region private fields

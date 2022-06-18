@@ -6,6 +6,9 @@ using Zenject;
 
 namespace Assets.Scripts.Camera
 {
+    /// <summary>
+    /// Following to player character when it starts to moving.
+    /// </summary>
     public class CameraFollower : MonoBehaviour
     {
         #region settings

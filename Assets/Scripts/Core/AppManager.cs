@@ -5,6 +5,9 @@ using Zenject;
 
 namespace Assets.Scripts.Core
 {
+    /// <summary>
+    /// Managing app lifecycle.
+    /// </summary>
     public class AppManager : MonoBehaviour
     {
         #region private fields

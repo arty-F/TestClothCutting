@@ -38,6 +38,9 @@ public class MainInstaller : MonoInstaller
         Container.Bind<PlayerUnit>().FromInstance(player).AsSingle();
     }
 
+    /// <summary>
+    /// Instantiated player character GameObject and storing reference in <see cref="PlayerUnit"/>.
+    /// </summary>
     public GameObject CreatePlayer()
     {
         var playerObj = Container.InstantiatePrefab(levelObjectsSettings.CubePrefab, 

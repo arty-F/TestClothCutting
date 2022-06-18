@@ -2,6 +2,9 @@
 
 namespace Assets.Scripts.StateMachine
 {
+    /// <summary>
+    /// Implementation for initialization <see cref="StateMachine{T}"/> with <seealso cref="GameState"/> - T parameter.
+    /// </summary>
     public class GameStateMachineInitializer : IStateMachineInitializer<GameState>
     {
         public StateMachine<GameState> Create()

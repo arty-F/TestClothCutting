@@ -4,6 +4,9 @@ using Zenject;
 
 namespace Assets.Scripts.Player
 {
+    /// <summary>
+    /// Move & rotate player character.
+    /// </summary>
     public class PlayerMover : MonoBehaviour
     {
         #region settings
@@ -34,11 +37,9 @@ namespace Assets.Scripts.Player
             gameStateMachine.Subscribe(GameState.LevelConstructed, GameState.ObjectStartMoving, OnStartMoving);
         }
 
-        public void OnStartMoving()
-        {
-            isMoving = true;
-        }
-
+        /// <summary>
+        /// Sets point to player character auto moving.
+        /// </summary>
         public void SetMovingPoints(Vector3[] checkpoints)
         {
             this.checkpoints = checkpoints;
@@ -94,6 +95,11 @@ namespace Assets.Scripts.Player
             var desiredRotation = Quaternion.Euler(transform.eulerAngles.x, transform.eulerAngles.y, transform.eulerAngles.z + zAngle);
 
             transform.rotation = Quaternion.Lerp(transform.rotation, desiredRotation, Time.deltaTime * _rotationDamping);
+        }
+
+        private void OnStartMoving()
+        {
+            isMoving = true;
         }
 
         private void FinishPointReached()

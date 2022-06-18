@@ -4,6 +4,10 @@ using System.Linq;
 
 namespace Assets.Scripts.StateMachine
 {
+    /// <summary>
+    /// Generic FSM implementation.
+    /// </summary>
+    /// <typeparam name="T">Enum state.</typeparam>
     public class StateMachine<T> where T : struct
     {
         private List<StateMachineActionContainer<T>> actionContainers;
@@ -16,6 +20,10 @@ namespace Assets.Scripts.StateMachine
             actionContainers = new List<StateMachineActionContainer<T>>();
         }
 
+        /// <summary>
+        /// Changed current FSM state to passed value.
+        /// </summary>
+        /// <param name="next">Next state.</param>
         public void ChangeStateTo(T next)
         {
             if (!currentState.CanMakeTransition(next))
@@ -33,6 +41,12 @@ namespace Assets.Scripts.StateMachine
             }
         }
 
+        /// <summary>
+        /// Subscribe to action invoking, when FSM changed it state.
+        /// </summary>
+        /// <param name="from">From state.</param>
+        /// <param name="to">To state.</param>
+        /// <param name="action">Action to invoke, when state changing.</param>
         public void Subscribe(T from, T to, Action action)
         {
             var container = GetContainerWithTransition(from, to);
@@ -46,6 +60,12 @@ namespace Assets.Scripts.StateMachine
             container.Subscribe(action);
         }
 
+        /// <summary>
+        /// Unsubscribe to action invoking, when FSM changed it state.
+        /// </summary>
+        /// <param name="from">From state.</param>
+        /// <param name="to">To state.</param>
+        /// <param name="action">Unsubscribed action.</param>
         public void Unsubscribe(T from, T to, Action action)
         {
             var container = GetContainerWithTransition(from, to);
